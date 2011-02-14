@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace PanelsNet
 {
-    public class PaneponGame
+    public class Field
     {
         private Block[,] m_field;
         private BlockColour[,] m_below_field; // Dimmed blocks yet to be raised to the field.
@@ -78,7 +78,7 @@ namespace PanelsNet
             }
         }
 
-        public PaneponGame(int Level, Difficulty difficulty)
+        public Field(int Level, Difficulty difficulty)
         {
             therand = new Random(); // Good enough randomization for now?
 

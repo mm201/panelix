@@ -18,26 +18,32 @@ namespace PanelsNet
     /// </summary>
     public class SinglePlay : Microsoft.Xna.Framework.GameComponent
     {
-        private BaseGame base_game;
+        // parent
+        private BaseGame m_base_game;
+        private GraphicsDevice m_graphics;
 
-        private SpriteBatch spriteBatch;
+        // field object
+        private Field m_field;
 
-        private String note_text;
-        private int note_show_time;
-
-        private PaneponGame the_game;
-        private int cruiser_anim_frame;
-        private GraphicsDeviceManager graphics;
+        // graphics resources
+        private SpriteBatch m_sprite_batch;
 
         public Texture2D[,] blocks;
         public Texture2D c1;
         public Texture2D c2;
 
+        // state logic
+        private String note_text;
+        private int note_show_time;
+
+        private int cruiser_anim_frame;
+
+
         public SinglePlay(BaseGame game)
             : base(game)
         {
-            base_game = game;
-            graphics = game.graphics;
+            m_base_game = game;
+            m_graphics = game.graphics.GraphicsDevice;
         }
 
         /// <summary>
@@ -50,38 +56,38 @@ namespace PanelsNet
             cruiser_anim_frame = 0;
             note_show_time = 0;
 
-            the_game = new PaneponGame(1, Difficulty.Easy);
-            the_game.OnCombo += DoCombo;
-            the_game.OnChain += DoChain;
+            m_field = new Field(1, Difficulty.Easy);
+            m_field.OnCombo += DoCombo;
+            m_field.OnChain += DoChain;
 
             input_lag = 0;
 
-            spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
+            m_sprite_batch = new SpriteBatch(m_graphics);
             blocks = new Texture2D[6, 4];
 
             for (int x = 0; x < 4; x++)
             {
-                blocks[0, x] = base_game.Content.Load<Texture2D>("red" + (x + 1).ToString());
-                blocks[1, x] = base_game.Content.Load<Texture2D>("green" + (x + 1).ToString());
-                blocks[2, x] = base_game.Content.Load<Texture2D>("teal" + (x + 1).ToString());
-                blocks[3, x] = base_game.Content.Load<Texture2D>("yellow" + (x + 1).ToString());
-                blocks[4, x] = base_game.Content.Load<Texture2D>("purple" + (x + 1).ToString());
-                blocks[5, x] = base_game.Content.Load<Texture2D>("blue" + (x + 1).ToString());
+                blocks[0, x] = m_base_game.Content.Load<Texture2D>("red" + (x + 1).ToString());
+                blocks[1, x] = m_base_game.Content.Load<Texture2D>("green" + (x + 1).ToString());
+                blocks[2, x] = m_base_game.Content.Load<Texture2D>("teal" + (x + 1).ToString());
+                blocks[3, x] = m_base_game.Content.Load<Texture2D>("yellow" + (x + 1).ToString());
+                blocks[4, x] = m_base_game.Content.Load<Texture2D>("purple" + (x + 1).ToString());
+                blocks[5, x] = m_base_game.Content.Load<Texture2D>("blue" + (x + 1).ToString());
             }
 
-            c1 = base_game.Content.Load<Texture2D>("cruiser1");
-            c2 = base_game.Content.Load<Texture2D>("cruiser2");
+            c1 = m_base_game.Content.Load<Texture2D>("cruiser1");
+            c2 = m_base_game.Content.Load<Texture2D>("cruiser2");
 
             base.Initialize();
         }
 
-        protected void DoCombo(object sender, PaneponGame.PaneponEventArgs e)
+        protected void DoCombo(object sender, Field.PaneponEventArgs e)
         {
             note_text = e.Size.ToString() + " combo!";
             note_show_time = 60;
         }
 
-        protected void DoChain(object sender, PaneponGame.PaneponEventArgs e)
+        protected void DoChain(object sender, Field.PaneponEventArgs e)
         {
             note_text = e.Size.ToString() + " chain!";
             note_show_time = 60;
@@ -89,16 +95,16 @@ namespace PanelsNet
 
         public void Render(GameTime gameTime)
         {
-            base_game.graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
-            int w = graphics.GraphicsDevice.Viewport.Width;
-            int h = graphics.GraphicsDevice.Viewport.Height;
+            m_base_game.graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
+            int w = m_graphics.Viewport.Width;
+            int h = m_graphics.Viewport.Height;
 
             int BlockSize = h / 15;
             Point start = new Point(w / 2 - BlockSize * 3, h / 2 + BlockSize * 5);
             Color white = new Color(255, 255, 255);
             Color red = new Color(255, 0, 0);
 
-            spriteBatch.Begin(SpriteBlendMode.AlphaBlend);
+            m_sprite_batch.Begin(SpriteBlendMode.AlphaBlend);
 
             Block theblock;
 
@@ -107,14 +113,14 @@ namespace PanelsNet
             // Draw the dark bottom row.
             Color grey = new Color(128, 128, 128);
             BlockColour thecolour;
-            by = start.Y + BlockSize - ((the_game.LiftPhase * BlockSize) >> 16);
+            by = start.Y + BlockSize - ((m_field.LiftPhase * BlockSize) >> 16);
             for (int x = 0; x < 6; x++)
             {
-                thecolour = the_game.BottomRow(x);
+                thecolour = m_field.BottomRow(x);
 
                 bx = start.X + x * BlockSize;
 
-                spriteBatch.Draw(blocks[(int)(thecolour) - 1, 0], new Rectangle(bx, by, BlockSize, BlockSize), grey);
+                m_sprite_batch.Draw(blocks[(int)(thecolour) - 1, 0], new Rectangle(bx, by, BlockSize, BlockSize), grey);
             }
 
             bool invis, flasher;
@@ -128,8 +134,8 @@ namespace PanelsNet
             {
                 for (int x = 0; x < 6; x++)
                 {
-                    theblock = the_game.BlockAt(x, y);
-                    by = start.Y - (y * BlockSize) - ((the_game.LiftPhase * BlockSize) >> 16);
+                    theblock = m_field.BlockAt(x, y);
+                    by = start.Y - (y * BlockSize) - ((m_field.LiftPhase * BlockSize) >> 16);
 
                     if (theblock.Colour > 0)
                     {
@@ -189,15 +195,15 @@ namespace PanelsNet
                         }
 
                         if (flasher) { }
-                        else if (!invis) spriteBatch.Draw(block_tex, new Rectangle(bx, by, BlockSize, BlockSize), block_col);
+                        else if (!invis) m_sprite_batch.Draw(block_tex, new Rectangle(bx, by, BlockSize, BlockSize), block_col);
                     }
                 }
             }
 
-            spriteBatch.End();
+            m_sprite_batch.End();
             if (flashcount > 0)
             {
-                BasicEffect effect = new BasicEffect(graphics.GraphicsDevice, null);
+                BasicEffect effect = new BasicEffect(m_graphics, null);
                 effect.TextureEnabled = true;
                 effect.LightingEnabled = false;
                 effect.DiffuseColor = new Vector3(1f, 1f, 1f);
@@ -206,51 +212,51 @@ namespace PanelsNet
                 effect.VertexColorEnabled = true;
                 effect.Projection = Matrix.CreateOrthographicOffCenter(0, w, h, 0, 0, 1);
 
-                graphics.GraphicsDevice.RenderState.PointSize = BlockSize;
+                m_graphics.RenderState.PointSize = BlockSize;
 
                 effect.Begin();
                 foreach (EffectPass pass in effect.CurrentTechnique.Passes)
                 {
                     pass.Begin();
-                    graphics.GraphicsDevice.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.PointList, pts.ToArray(), 0, flashcount);
+                    m_graphics.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.PointList, pts.ToArray(), 0, flashcount);
                     pass.End();
                 }
                 effect.End();
             }
-            spriteBatch.Begin();
+            m_sprite_batch.Begin();
 
-            if (the_game.State == GameState.CruiserSlide)
+            if (m_field.State == GameState.CruiserSlide)
             {
-                if (the_game.Counter > 20)
+                if (m_field.Counter > 20)
                 {
-                    spriteBatch.Draw(c1, new Rectangle(start.X - BlockSize / 4 + (4 * BlockSize), (int)(start.Y - BlockSize / 8 - ((12 * 40 - (60 - the_game.Counter) * 7) * BlockSize) / 40 - ((the_game.LiftPhase * BlockSize) >> 16)), (5 * BlockSize) / 2, (5 * BlockSize) / 4), white);
+                    m_sprite_batch.Draw(c1, new Rectangle(start.X - BlockSize / 4 + (4 * BlockSize), (int)(start.Y - BlockSize / 8 - ((12 * 40 - (60 - m_field.Counter) * 7) * BlockSize) / 40 - ((m_field.LiftPhase * BlockSize) >> 16)), (5 * BlockSize) / 2, (5 * BlockSize) / 4), white);
                 }
                 else
                 {
-                    spriteBatch.Draw(c1, new Rectangle((int)(start.X - BlockSize / 4 + ((4 * 20 - (20 - the_game.Counter) * 2) * BlockSize) / 20), start.Y - BlockSize / 8 - (5 * BlockSize) - ((the_game.LiftPhase * BlockSize) >> 16), (5 * BlockSize) / 2, (5 * BlockSize) / 4), white);
+                    m_sprite_batch.Draw(c1, new Rectangle((int)(start.X - BlockSize / 4 + ((4 * 20 - (20 - m_field.Counter) * 2) * BlockSize) / 20), start.Y - BlockSize / 8 - (5 * BlockSize) - ((m_field.LiftPhase * BlockSize) >> 16), (5 * BlockSize) / 2, (5 * BlockSize) / 4), white);
                 }
             }
-            else if (the_game.State == GameState.Countdown)
+            else if (m_field.State == GameState.Countdown)
             {
                 if (cruiser_anim_frame % 2 == 0)
                 {
-                    spriteBatch.Draw((cruiser_anim_frame >= 60) ? c2 : c1, new Rectangle(start.X - BlockSize / 4 + (the_game.CruiserPos.X * BlockSize), start.Y - BlockSize / 8 - (the_game.CruiserPos.Y * BlockSize) - ((the_game.LiftPhase * BlockSize) >> 16), (5 * BlockSize) / 2, (5 * BlockSize) / 4), white);
+                    m_sprite_batch.Draw((cruiser_anim_frame >= 60) ? c2 : c1, new Rectangle(start.X - BlockSize / 4 + (m_field.CruiserPos.X * BlockSize), start.Y - BlockSize / 8 - (m_field.CruiserPos.Y * BlockSize) - ((m_field.LiftPhase * BlockSize) >> 16), (5 * BlockSize) / 2, (5 * BlockSize) / 4), white);
                 }
             }
-            else if (the_game.State == GameState.Main)
+            else if (m_field.State == GameState.Main)
             {
-                spriteBatch.Draw((cruiser_anim_frame >= 60) ? c2 : c1, new Rectangle(start.X - BlockSize / 4 + (the_game.CruiserPos.X * BlockSize), start.Y - BlockSize / 8 - (the_game.CruiserPos.Y * BlockSize) - ((the_game.LiftPhase * BlockSize) >> 16), (5 * BlockSize) / 2, (5 * BlockSize) / 4), white);
+                m_sprite_batch.Draw((cruiser_anim_frame >= 60) ? c2 : c1, new Rectangle(start.X - BlockSize / 4 + (m_field.CruiserPos.X * BlockSize), start.Y - BlockSize / 8 - (m_field.CruiserPos.Y * BlockSize) - ((m_field.LiftPhase * BlockSize) >> 16), (5 * BlockSize) / 2, (5 * BlockSize) / 4), white);
             }
-            else if (the_game.State == GameState.GameOver)
+            else if (m_field.State == GameState.GameOver)
             {
             }
 
             if (note_show_time > 0)
             {
-                spriteBatch.DrawString(base_game.sprite_font, note_text, new Vector2(40, 40), white);
+                m_sprite_batch.DrawString(m_base_game.sprite_font, note_text, new Vector2(40, 40), white);
             }
 
-            spriteBatch.End();
+            m_sprite_batch.End();
         }
 
         /// <summary>
@@ -268,14 +274,14 @@ namespace PanelsNet
 
             if (ks.IsKeyDown(Keys.LeftShift) || ks.IsKeyDown(Keys.RightShift))
             {
-                the_game.Lift();
+                m_field.Lift();
             }
             if (ks.IsKeyDown(Keys.Space))
             {
                 if (btn != InputButton.Switch)
                 {
                     btn = InputButton.Switch;
-                    the_game.Switch();
+                    m_field.Switch();
                 }
             }
             else if (ks.IsKeyDown(Keys.Left))
@@ -284,11 +290,11 @@ namespace PanelsNet
                 {
                     btn = InputButton.Left;
                     input_lag = 10;
-                    if (the_game.CruiserPos.X > 0) the_game.CruiserPos = new Point(the_game.CruiserPos.X - 1, the_game.CruiserPos.Y);
+                    if (m_field.CruiserPos.X > 0) m_field.CruiserPos = new Point(m_field.CruiserPos.X - 1, m_field.CruiserPos.Y);
                 }
                 else if (input_lag == 0)
                 {
-                    if (the_game.CruiserPos.X > 0) the_game.CruiserPos = new Point(the_game.CruiserPos.X - 1, the_game.CruiserPos.Y);
+                    if (m_field.CruiserPos.X > 0) m_field.CruiserPos = new Point(m_field.CruiserPos.X - 1, m_field.CruiserPos.Y);
                 }
             }
             else if (ks.IsKeyDown(Keys.Right))
@@ -297,11 +303,11 @@ namespace PanelsNet
                 {
                     btn = InputButton.Right;
                     input_lag = 10;
-                    if (the_game.CruiserPos.X < 4) the_game.CruiserPos = new Point(the_game.CruiserPos.X + 1, the_game.CruiserPos.Y);
+                    if (m_field.CruiserPos.X < 4) m_field.CruiserPos = new Point(m_field.CruiserPos.X + 1, m_field.CruiserPos.Y);
                 }
                 else if (input_lag == 0)
                 {
-                    if (the_game.CruiserPos.X < 4) the_game.CruiserPos = new Point(the_game.CruiserPos.X + 1, the_game.CruiserPos.Y);
+                    if (m_field.CruiserPos.X < 4) m_field.CruiserPos = new Point(m_field.CruiserPos.X + 1, m_field.CruiserPos.Y);
                 }
             }
             else if (ks.IsKeyDown(Keys.Up))
@@ -310,11 +316,11 @@ namespace PanelsNet
                 {
                     btn = InputButton.Up;
                     input_lag = 10;
-                    if (the_game.CruiserPos.Y < 11) the_game.CruiserPos = new Point(the_game.CruiserPos.X, the_game.CruiserPos.Y + 1);
+                    if (m_field.CruiserPos.Y < 11) m_field.CruiserPos = new Point(m_field.CruiserPos.X, m_field.CruiserPos.Y + 1);
                 }
                 else if (input_lag == 0)
                 {
-                    if (the_game.CruiserPos.Y < 11) the_game.CruiserPos = new Point(the_game.CruiserPos.X, the_game.CruiserPos.Y + 1);
+                    if (m_field.CruiserPos.Y < 11) m_field.CruiserPos = new Point(m_field.CruiserPos.X, m_field.CruiserPos.Y + 1);
                 }
             }
             else if (ks.IsKeyDown(Keys.Down))
@@ -323,11 +329,11 @@ namespace PanelsNet
                 {
                     btn = InputButton.Down;
                     input_lag = 10;
-                    if (the_game.CruiserPos.Y > 0) the_game.CruiserPos = new Point(the_game.CruiserPos.X, the_game.CruiserPos.Y - 1);
+                    if (m_field.CruiserPos.Y > 0) m_field.CruiserPos = new Point(m_field.CruiserPos.X, m_field.CruiserPos.Y - 1);
                 }
                 else if (input_lag == 0)
                 {
-                    if (the_game.CruiserPos.Y > 0) the_game.CruiserPos = new Point(the_game.CruiserPos.X, the_game.CruiserPos.Y - 1);
+                    if (m_field.CruiserPos.Y > 0) m_field.CruiserPos = new Point(m_field.CruiserPos.X, m_field.CruiserPos.Y - 1);
                 }
             }
             else
@@ -341,7 +347,7 @@ namespace PanelsNet
                 cruiser_anim_frame += 120;
             }
 
-            the_game.Cycle();
+            m_field.Cycle();
 
             base.Update(gameTime);
         }
