@@ -102,6 +102,7 @@ namespace PanelsNet
             int BlockSize = h / 15;
             Point start = new Point(w / 2 - BlockSize * 3, h / 2 + BlockSize * 5);
             Color white = new Color(255, 255, 255);
+            Color transwhite = new Color(255, 255, 255, 191);
             Color red = new Color(255, 0, 0);
 
             m_sprite_batch.Begin(SpriteBlendMode.AlphaBlend);
@@ -123,7 +124,7 @@ namespace PanelsNet
                 m_sprite_batch.Draw(blocks[(int)(thecolour) - 1, 0], new Rectangle(bx, by, BlockSize, BlockSize), grey);
             }
 
-            bool invis, flasher;
+            bool invis;
             int flashcount = 0;
             Texture2D block_tex;
             Color block_col;
@@ -160,7 +161,7 @@ namespace PanelsNet
                                     {
                                         block_col = white;
                                         flashcount++;
-                                        pts.Add(new VertexPositionColor(new Vector3(bx + (float)BlockSize / 2f, by + (float)BlockSize / 2f, 0), white));
+                                        pts.Add(new VertexPositionColor(new Vector3(bx + (float)BlockSize / 2f, by + (float)BlockSize / 2f, 0), transwhite));
                                         flasher = true;
                                     }
                                     else
@@ -194,8 +195,7 @@ namespace PanelsNet
                                 break;
                         }
 
-                        if (flasher) { }
-                        else if (!invis) m_sprite_batch.Draw(block_tex, new Rectangle(bx, by, BlockSize, BlockSize), block_col);
+                        if (!invis) m_sprite_batch.Draw(block_tex, new Rectangle(bx, by, BlockSize, BlockSize), block_col);
                     }
                 }
             }
