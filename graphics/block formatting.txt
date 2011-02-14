@@ -1,0 +1,4 @@
+Default: 192x192 centred.
+Squish: 192x160 bottom: 32px up.
+Up1: 192x192 top: 26px down
+Up2: 192x192 top: 20px down

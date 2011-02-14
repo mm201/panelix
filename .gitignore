@@ -1,0 +1,6 @@
+
+PanelsNet/bin/*
+PanelsNet/obj/*
+PanelsNet.csproj.user
+*.suo
+*.cachefile

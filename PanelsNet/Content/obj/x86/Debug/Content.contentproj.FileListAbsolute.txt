@@ -1,0 +1,2 @@
+C:\Source code\PanelsNet\PanelsNet\Content\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Greg\Source Code\PanelsNet\PanelsNet\Content\obj\x86\Debug\ResolveAssemblyReference.cache
