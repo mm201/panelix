@@ -142,7 +142,6 @@ namespace PanelsNet
                     {
                         bx = start.X + x * BlockSize;
                         invis = false;
-                        flasher = false;
 
                         switch (theblock.State)
                         {
@@ -162,7 +161,6 @@ namespace PanelsNet
                                         block_col = white;
                                         flashcount++;
                                         pts.Add(new VertexPositionColor(new Vector3(bx + (float)BlockSize / 2f, by + (float)BlockSize / 2f, 0), transwhite));
-                                        flasher = true;
                                     }
                                     else
                                     {
