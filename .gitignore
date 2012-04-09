@@ -1,6 +1,8 @@
 
-PanelsNet/bin/*
-PanelsNet/obj/*
-PanelsNet.csproj.user
+.DS_Store
+Thumbs.db
+bin/
+obj/
+*.csproj.user
 *.suo
 *.cachefile
