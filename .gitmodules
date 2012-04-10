@@ -1,0 +1,3 @@
+[submodule "gamefloor"]
+	path = gamefloor
+	url = git@github.com:mm201/gamefloor.git
