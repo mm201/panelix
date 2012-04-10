@@ -8,8 +8,9 @@ namespace Panelix
     {
         static void Main(string[] args)
         {
-            PanelixGame theGame = new PanelixGame();
-            theGame.Run();
+            PanelixGame theGame = new PanelixGame(640, 480, "Panelix test");
+            theGame.RunAsync();
+            while (theGame.Running) { theGame.ProcessEvents(); }
         }
     }
 }
