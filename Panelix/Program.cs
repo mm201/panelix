@@ -8,6 +8,8 @@ namespace Panelix
     {
         static void Main(string[] args)
         {
+            PanelixGame theGame = new PanelixGame();
+            theGame.Run();
         }
     }
 }
