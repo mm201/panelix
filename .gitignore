@@ -6,3 +6,5 @@ obj/
 *.csproj.user
 *.suo
 *.cachefile
+*.pidb
+*.userprefs
