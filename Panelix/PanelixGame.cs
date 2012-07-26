@@ -16,6 +16,11 @@ namespace Panelix
         public PanelixGame(int width, int height, String title)
             : base(width, height, title)
         {
+            
+        }
+
+        protected override void SetupWindow()
+        {
         }
     }
 }
