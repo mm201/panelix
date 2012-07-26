@@ -1,0 +1,5 @@
+// halftoned ball pattern for Panelix chain/combo markers
+
+#version 3.7
+
+global_settings
