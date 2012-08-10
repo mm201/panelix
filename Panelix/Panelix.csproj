@@ -42,13 +42,16 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Field.cs" />
     <Compile Include="PanelixGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestEndlessMode.cs" />
     <Compile Include="TestMode.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -56,6 +59,9 @@
       <Project>{6DE14D20-FFFE-4C87-B9FA-E5DD2ECA376D}</Project>
       <Name>Gamefloor</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GameModes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

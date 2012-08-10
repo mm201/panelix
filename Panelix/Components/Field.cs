@@ -4,7 +4,7 @@ using System.Text;
 using System.Drawing;
 using Gamefloor.Framework;
 
-namespace PanelsNet
+namespace Panelix.Components
 {
     public class Field : GameComponent
     {
@@ -79,7 +79,8 @@ namespace PanelsNet
             }
         }
 
-        public Field(int Level, Difficulty difficulty)
+        public Field(Game game, int Level, Difficulty difficulty)
+            : base(game)
         {
             therand = new Random(); // Good enough randomization for now?
 

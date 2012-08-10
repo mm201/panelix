@@ -9,7 +9,7 @@ namespace Panelix
     {
         protected override void Begin()
         {
-            TestMode testmode = new TestMode(this);
+            TestEndlessMode testmode = new TestEndlessMode(this);
             testmode.Run();
         }
 
@@ -21,6 +21,8 @@ namespace Panelix
 
         protected override void SetupWindow()
         {
+            this.TargetFps = 60;
+            this.Vsync = true;
         }
     }
 }
