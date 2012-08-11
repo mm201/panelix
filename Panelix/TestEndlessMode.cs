@@ -9,6 +9,7 @@ using System.Drawing;
 using Panelix.Components;
 using OpenTK.Input;
 using OpenTK;
+using System.IO;
 
 namespace Panelix
 {
@@ -45,14 +46,14 @@ namespace Panelix
                 m_field.OnChain += DoChain;
 
                 AtlasBuilder builder = new AtlasBuilder(Game);
-                builder.Textures.Add(LoadResized("block00.png"));
-                builder.Textures.Add(LoadResized("block10.png"));
-                builder.Textures.Add(LoadResized("block20.png"));
-                builder.Textures.Add(LoadResized("block30.png"));
-                builder.Textures.Add(LoadResized("block40.png"));
-                builder.Textures.Add(LoadResized("block50.png"));
-                builder.Textures.Add(LoadResized("cruiser0.png"));
-                builder.Textures.Add(new LoadingTexture("white.png"));
+                builder.Textures.Add(LoadResized("images/block00.png"));
+                builder.Textures.Add(LoadResized("images/block10.png"));
+                builder.Textures.Add(LoadResized("images/block20.png"));
+                builder.Textures.Add(LoadResized("images/block30.png"));
+                builder.Textures.Add(LoadResized("images/block40.png"));
+                builder.Textures.Add(LoadResized("images/block50.png"));
+                builder.Textures.Add(LoadResized("images/cruiser0.png"));
+                builder.Textures.Add(new LoadingTexture("images/white.png"));
 
                 using (tex = builder.Build())
                 {
@@ -379,7 +380,7 @@ namespace Panelix
         {
             Bitmap b = new Bitmap(filename);
             Bitmap d = new Bitmap(b, (int)(b.Width * zoom), (int)(b.Height * zoom));
-            return new LoadingTexture(filename, d);
+            return new LoadingTexture(Path.GetFileName(filename), d);
         }
     }
 }
