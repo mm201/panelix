@@ -1,2 +1,7 @@
-This is a Panel de Pon clone I am working on. Very early with no frills but a basic playable game :)
-Requires VS2008 and XNA 3.1 to compile.
+Panelix is an action puzzle game in development for mobile platforms.
+
+The player must line up 3 or more blocks of the same colour to make them disappear. Blocks may only be moved left/right and are influenced by "gravity." New blocks appear from the bottom as the entire stack raises. Blocks may be moved while others are disappearing allowing for the creation of massive chain reactions.
+
+The finished game will feature endless play, puzzles which must be cleared with a limited number of moves, and VS play over local wireless, internet, or against a CPU.
+
+Target platforms are Apple iOS and Android.
