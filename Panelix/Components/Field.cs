@@ -99,7 +99,7 @@ namespace Panelix.Components
 
             m_lift_phase = 0;
             m_cruiser_pos = new Point(2, 5);
-            m_state = GameState.CruiserSlide;
+            m_state = GameState.Main;
             m_counter = 60;
             m_level = Level;
             m_score = 0;
@@ -173,21 +173,6 @@ namespace Panelix.Components
         {
             switch (m_state)
             {
-                case GameState.CruiserSlide:
-                    m_counter--;
-                    if (m_counter == 0)
-                    {
-                        m_state = GameState.Countdown;
-                        m_counter = 240;
-                    }
-                    break;
-                case GameState.Countdown:
-                    m_counter--;
-                    if (m_counter == 0)
-                    {
-                        m_state = GameState.Main;
-                    }
-                    break;
                 case GameState.Main:
                     Block theblock;
                     freeze_lift = false;
@@ -819,7 +804,7 @@ namespace Panelix.Components
 
     public enum GameState
     {
-        CruiserSlide, Countdown, Main, GameOver
+        Main, GameOver
     }
 
     public enum Difficulty

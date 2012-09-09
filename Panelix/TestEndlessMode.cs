@@ -301,30 +301,7 @@ namespace Panelix
                 GL.Color4(white);
 
                 // cruiser
-                if (m_field.State == GameState.CruiserSlide)
-                {
-                    if (m_field.Counter > 20)
-                    {
-                        drawcruiser(start.X,
-                            (int)(start.Y - BlockSize / 8 - ((12 * 40 - (60 - m_field.Counter) * 7) * BlockSize) / 40 - ((m_field.LiftPhase * BlockSize) >> 16)),
-                            BlockSize);
-                    }
-                    else
-                    {
-                        drawcruiser((int)(start.X - BlockSize / 4 + ((4 * 20 - (20 - m_field.Counter) * 2) * BlockSize) / 20), start.Y - BlockSize / 8 - (5 * BlockSize) - ((m_field.LiftPhase * BlockSize) >> 16),
-                            BlockSize);
-                    }
-                }
-                else if (m_field.State == GameState.Countdown)
-                {
-                    if (true)
-                    {
-                        drawcruiser(start.X + m_field.CruiserPos.X * BlockSize,
-                                    start.Y - m_field.CruiserPos.Y * BlockSize - ((m_field.LiftPhase * BlockSize) >> 16),
-                                    BlockSize);
-                    }
-                }
-                else if (m_field.State == GameState.Main)
+                if (m_field.State == GameState.Main)
                 {
                     drawcruiser(start.X + m_field.CruiserPos.X * BlockSize,
                                 start.Y - m_field.CruiserPos.Y * BlockSize - ((m_field.LiftPhase * BlockSize) >> 16),
