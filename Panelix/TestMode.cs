@@ -15,30 +15,32 @@ namespace Panelix
         }
 
         private TextureAtlas tex;
+        private int pos;
 
         protected override void Begin()
         {
             AtlasBuilder builder = new AtlasBuilder(Game);
-            builder.Textures.Add(new LoadingTexture("block00.png"));
-            builder.Textures.Add(new LoadingTexture("block10.png"));
-            builder.Textures.Add(new LoadingTexture("block20.png"));
-            builder.Textures.Add(new LoadingTexture("block30.png"));
-            builder.Textures.Add(new LoadingTexture("block40.png"));
-            builder.Textures.Add(new LoadingTexture("block50.png"));
+            builder.Textures.Add(new LoadingTexture("images/block00.png"));
+            builder.Textures.Add(new LoadingTexture("images/block10.png"));
+            builder.Textures.Add(new LoadingTexture("images/block20.png"));
+            builder.Textures.Add(new LoadingTexture("images/block30.png"));
+            builder.Textures.Add(new LoadingTexture("images/block40.png"));
+            builder.Textures.Add(new LoadingTexture("images/block50.png"));
+            pos = 0;
 
             using (tex = builder.Build())
             {
-                //Game.Wait(300);
                 while (true) Game.NextFrame();
             }
         }
 
         public override void Update(bool RenderableFrame)
         {
-            //flicker = !flicker;
+            pos++;
+            pos %= 120;
         }
 
-        public override void Render(IGraphicsContext context)
+        public override void Render(IGraphicsContext context, bool reverse)
         {
             GL.ClearColor(0.25f, 0.5f, 1.0f, 1.0f);
             GL.Clear(ClearBufferMask.ColorBufferBit);
@@ -51,15 +53,12 @@ namespace Panelix
             GL.Enable(EnableCap.Blend);
             tex.Bind();
 
+            int pos2 = pos;
+            if (pos2 > 60) pos2 = 120 - pos2;
             GL.Begin(BeginMode.Quads);
             {
                 GL.Color4(1.0f, 1.0f, 1.0f, 1.0f);
-                drawbrick(0, 0, tex["block00.png"]);
-                drawbrick(160, 0, tex["block10.png"]);
-                drawbrick(0, 160, tex["block20.png"]);
-                drawbrick(160, 160, tex["block30.png"]);
-                drawbrick(0, 320, tex["block40.png"]);
-                drawbrick(160, 320, tex["block50.png"]);
+                drawbrick(pos2 * 8, 0, tex["block00.png"]);
             }
             GL.End();
         }

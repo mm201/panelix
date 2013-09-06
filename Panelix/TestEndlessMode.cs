@@ -184,7 +184,7 @@ namespace Panelix
 
         }
 
-        public override void Render(IGraphicsContext context)
+        public override void Render(IGraphicsContext context, bool reverse)
         {
             GL.ClearColor(0.25f, 0.5f, 1.0f, 1.0f);
             GL.Clear(ClearBufferMask.ColorBufferBit);
